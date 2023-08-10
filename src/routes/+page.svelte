@@ -42,9 +42,12 @@
         } else if (
             $birthDay > 31 ||
             $birthMonth > 12 ||
-            $birthYear > currentDate.getFullYear()
+            $birthYear > currentDate.getFullYear() ||
+            $birthDay === 0 ||
+            $birthMonth === 0 ||
+            $birthYear === 0
         ) {
-            if ($birthDay > 31) {
+            if ($birthDay > 31 || $birthDay === 0) {
                 setAllEmpty(false);
                 dateInputs[0].validity = false;
             }
@@ -58,6 +61,9 @@
             }
         } else {
             setAllEmpty(false);
+            dateInputs[0].validity = true;
+            dateInputs[1].validity = true;
+            dateInputs[2].validity = true;
             setIsSelected(true);
 
             if (ageDays < 0) {
