@@ -89,7 +89,7 @@
 </script>
 
 <div
-    class="MainContainer bg-white mx-auto my-auto absolute py-12 rounded-large left-2/4 top-2/4 w-fit rounded-br-120 sm:rounded-br-250 xl:w-6/12 h-fit"
+    class="MainContainer bg-white mx-auto my-auto absolute md:py-2 py-12 rounded-large left-2/4 top-2/4 w-fit rounded-br-120 sm:rounded-br-250 xl:w-6/12 h-fit"
     style="transform: translate(-50%,-50%); font-family : poppins;"
 >
     <div class="dates flex gap-4 sm:gap-8 m-5 sm:m-7">
