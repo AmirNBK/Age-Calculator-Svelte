@@ -16,7 +16,7 @@
     </h4>
     <input
         {placeholder}
-        class="text-3xl w-36 h-16 rounded-md px-4 font-semibold outline-none"
+        class="text-xl lg:text-3xl w-24 sm:w-32 lg:w-36 h-12 sm:h-16 rounded-md px-4 font-semibold outline-none"
         style={`border: 1px solid ${empty ? "#FC7C7C" : "#8B8B8B"}`}
         bind:value={inputValue}
         on:input={() => onChange(inputValue, title)}

@@ -89,10 +89,10 @@
 </script>
 
 <div
-    class="MainContainer bg-white mx-auto my-auto absolute left-2/4 top-2/4 w-6/12 h-fit"
-    style="transform: translate(-50%,-50%); font-family : poppins; 	border-bottom-right-radius:250px"
+    class="MainContainer bg-white mx-auto my-auto absolute py-12 rounded-large left-2/4 top-2/4 w-fit rounded-br-120 sm:rounded-br-250 xl:w-6/12 h-fit"
+    style="transform: translate(-50%,-50%); font-family : poppins;"
 >
-    <div class="dates flex gap-8 m-7">
+    <div class="dates flex gap-4 sm:gap-8 m-5 sm:m-7">
         {#each dateInputs as items, index}
             <DateInput
                 title={items.title}
@@ -108,7 +108,7 @@
         <hr class="w-full" style={`background-color: #e7e7`} />
         <div
             style={`background-color: ${$isSelected ? "#864CFF" : "#151515"}`}
-            class="w-fit rounded-full p-5"
+            class="w-fit rounded-full p-4 md:p-5"
             role="button"
             on:click={() => onClick()}
             on:keydown={(event) => {
@@ -118,7 +118,7 @@
             }}
             tabindex="0"
         >
-            <img src={Arrow} alt="arrow" />
+            <img src={Arrow} alt="arrow" class="w-8 md:w-fit" />
         </div>
     </div>
 
