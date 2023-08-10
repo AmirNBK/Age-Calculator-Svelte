@@ -5,15 +5,20 @@
     import AgeResult from "../components/AgeResult.svelte";
     import { useState } from "../hooks/hooks";
 
-    const dateInputs = [
-        { title: "DAY", placeholder: "DD" },
-        { title: "MONTH", placeholder: "MM" },
-        { title: "YEAR", placeholder: "YYYY" },
-    ];
-
     const [birthDay, setBirthDay] = useState(0);
     const [birthMonth, setBirthMonth] = useState(0);
     const [birthYear, setBirthYear] = useState(0);
+    const [ageYear, setAgeYear] = useState(0);
+    const [ageMonth, setAgeMonth] = useState(0);
+    const [ageDay, setAgeDay] = useState(0);
+    const [isSelected, setIsSelected] = useState(false);
+    const [allEmpty, setAllEmpty] = useState(false);
+
+    const dateInputs = [
+        { title: "DAY", placeholder: "DD", validity: true },
+        { title: "MONTH", placeholder: "MM", validity: true },
+        { title: "YEAR", placeholder: "YYYY", validity: true },
+    ];
 
     const onChangeClick = (value, type) => {
         const numericValue = Number(value);
@@ -27,7 +32,53 @@
     };
 
     const onClick = () => {
-        console.log($birthDay, $birthMonth, $birthYear);
+        const birthDate = new Date($birthYear, $birthMonth - 1, $birthDay);
+        const currentDate = new Date();
+        let ageYears = currentDate.getFullYear() - birthDate.getFullYear();
+        let ageMonths = currentDate.getMonth() - birthDate.getMonth();
+        let ageDays = currentDate.getDate() - birthDate.getDate();
+        if (!$birthDay && !$birthMonth && !$birthYear) {
+            setAllEmpty(true);
+        } else if (
+            $birthDay > 31 ||
+            $birthMonth > 12 ||
+            $birthYear > currentDate.getFullYear()
+        ) {
+            if ($birthDay > 31) {
+                setAllEmpty(false);
+                dateInputs[0].validity = false;
+            }
+            if ($birthMonth > 12) {
+                setAllEmpty(false);
+                dateInputs[1].validity = false;
+            }
+            if ($birthYear > currentDate.getFullYear()) {
+                setAllEmpty(false);
+                dateInputs[2].validity = false;
+            }
+        } else {
+            setAllEmpty(false);
+            setIsSelected(true);
+
+            if (ageDays < 0) {
+                ageMonths--;
+                const lastMonthDate = new Date(
+                    currentDate.getFullYear(),
+                    currentDate.getMonth(),
+                    0
+                );
+                ageDays += lastMonthDate.getDate();
+            }
+
+            if (ageMonths < 0) {
+                ageYears--;
+                ageMonths += 12;
+            }
+
+            setAgeYear(ageYears);
+            setAgeMonth(ageMonths);
+            setAgeDay(ageDays);
+        }
     };
 </script>
 
@@ -41,14 +92,16 @@
                 title={items.title}
                 placeholder={items.placeholder}
                 onChange={onChangeClick}
+                empty={$allEmpty}
+                isValid={items.validity}
             />
         {/each}
     </div>
 
     <div class="flex flex-row items-center mr-6 ml-7">
-        <hr class="w-full" style="background-color: #e7e7;" />
+        <hr class="w-full" style={`background-color: #e7e7`} />
         <div
-            style="background-color: #864CFF;"
+            style={`background-color: ${$isSelected ? "#864CFF" : "#151515"}`}
             class="w-fit rounded-full p-5"
             role="button"
             on:click={() => onClick()}
@@ -64,8 +117,8 @@
     </div>
 
     <div class="ageResult ml-7 mb-7">
-        <AgeResult time="years" />
-        <AgeResult time="months" />
-        <AgeResult time="days" />
+        <AgeResult time="years" value={ageYear} />
+        <AgeResult time="months" value={ageMonth} />
+        <AgeResult time="days" value={ageDay} />
     </div>
 </div>
